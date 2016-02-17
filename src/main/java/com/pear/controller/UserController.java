@@ -23,13 +23,6 @@ public class UserController extends BaseContorller {
 		return "register";
 	}
 	
-	@RequestMapping("/getUserList")
-	@ResponseBody
-	public String showUser(Dto dto, ModelMap modelMap) {
-		//List<Map<String, Object>> list = userService.selUserList(dto.getMap());
-		return "";
-	}
-	
 	/**
 	 * @Title: addUser
 	 * @Description: 注册账号并添加用户
@@ -63,5 +56,6 @@ public class UserController extends BaseContorller {
 		
 		return JSONReturn.newInstance().json(false);
 	}
+	
 	
 }

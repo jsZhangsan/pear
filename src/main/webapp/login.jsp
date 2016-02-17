@@ -10,5 +10,10 @@
 </head>
 <body>
 	<a href="<c:url value='/user/register'/>">注册</a>
+	<ul>
+		<li><label>用户名</label><input name="username" type="text"/></li>
+		<li><label>密 码</label><input name="password" type="password"/></li>
+		<li><input type="submit" value="登录" /></li>
+	</ul>
 </body>
 </html>
