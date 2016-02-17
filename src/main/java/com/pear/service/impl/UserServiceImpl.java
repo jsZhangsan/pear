@@ -1,36 +1,44 @@
 package com.pear.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.pear.dao.TUserMapper;
-import com.pear.model.TUser;
+import com.pear.common.CommonUtil;
+import com.pear.dao.LoginMapper;
+import com.pear.dao.UserMapper;
+import com.pear.model.Login;
+import com.pear.model.User;
 import com.pear.service.UserService;
+
 @Service
 public class UserServiceImpl implements UserService {
 	
 	@Resource
-	private TUserMapper tUserMapper;
+	private LoginMapper loginMapper;
+	@Resource
+	private UserMapper userMapper;
 
-	public TUser selUser(String id) {
-		// TODO Auto-generated method stub
-		return tUserMapper.selectByPrimaryKey(id);
+	@Override
+	public int addUser(Login login) {
+		String userId  = CommonUtil.getUUID();
+		String loginId  = CommonUtil.getUUID();
+		
+		User user = new User();
+		user.setName(login.getUsername());
+		user.setId(userId);
+		
+		login.setUserId(userId);
+		login.setId(loginId);
+		
+		userMapper.insertSelective(user);
+		loginMapper.insertSelective(login);
+		return 0;
 	}
 
 	@Override
-	public int addUser(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return tUserMapper.addUser(map);
-	}
-
-	@Override
-	public List<Map<String, Object>> selUserList(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return tUserMapper.selUserList(map);
+	public Login getLoginByUsername(String username) {
+		return loginMapper.selectByUsername(username);
 	}
 
 }

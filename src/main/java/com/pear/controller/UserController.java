@@ -1,18 +1,14 @@
 package com.pear.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pear.common.JSONReturn;
-import com.pear.model.TUser;
+import com.pear.model.Login;
 import com.pear.service.UserService;
 
 @Controller
@@ -22,31 +18,50 @@ public class UserController extends BaseContorller {
 	@Resource
 	private UserService userService;
 	
-	@RequestMapping("/showUser")
+	@RequestMapping("/register")
 	public String showUser() {
-		return "showUser";
+		return "register";
 	}
 	
 	@RequestMapping("/getUserList")
 	@ResponseBody
 	public String showUser(Dto dto, ModelMap modelMap) {
-		List<Map<String, Object>> list = userService.selUserList(dto.getMap());
-		return JSONReturn.newInstance().page(list);
+		//List<Map<String, Object>> list = userService.selUserList(dto.getMap());
+		return "";
 	}
 	
+	/**
+	 * @Title: addUser
+	 * @Description: 注册账号并添加用户
+	 * @param:
+	 * @return:
+	 * @author 张鑫磊
+	 * @date 2016年2月17日 下午3:21:33
+	 */
 	@RequestMapping("/addUser")
 	@ResponseBody
-	public String addUser(Dto dto) {
-		Map<String, Object> map = dto.getMap();
-		userService.addUser(map);
-		
-		return JSONReturn.newInstance().json(map);
+	public String addUser(Login login) {
+		userService.addUser(login);
+		return JSONReturn.newInstance().json("");
 	}
 	
-	@RequestMapping("/adu")
+	/**
+	 * @Title: isHaved
+	 * @Description: 判断账号是否存在,返回boolean
+	 * @param:
+	 * @return:
+	 * @author 张鑫磊
+	 * @date 2016年2月17日 下午3:20:49
+	 */
+	@RequestMapping("/isHaved")
 	@ResponseBody
-	public String addUser2(TUser u) {
-		System.out.println(ReflectionToStringBuilder.toString(u));
-		return "showUser";
+	public String isHaved(Login login) {
+		Login tempLogin = userService.getLoginByUsername(login.getUsername());
+		if(tempLogin != null){
+			return JSONReturn.newInstance().json();
+		}
+		
+		return JSONReturn.newInstance().json(false);
 	}
+	
 }

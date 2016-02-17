@@ -1,51 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>框架demo</title>
-<jsp:include page="/WEB-INF/jsp/common/scriptInc.jsp"></jsp:include>
-<jsp:include page="/WEB-INF/jsp/common/styleInc.jsp"></jsp:include>
-<script type="text/javascript" src="<%=path%>/resources/js/jquery-1.12.0.js"></script>
+<title>注册</title>
+<jsp:include page="/WEB-INF/jsp/common/common.jsp"></jsp:include>
 <script type="text/javascript">
-	$.fn.serializeObject = function() {
-		var o = {};
-		var a = this.serializeArray();
-		$.each(a, function() {
-			if (o[this.name]) {
-				if (!o[this.name].push) {
-					o[this.name] = [ o[this.name] ];
-				}
-				o[this.name].push(this.value || '');
-			} else {
-				o[this.name] = this.value || '';
-			}
-		});
-		return o;
-	};
-
 	function addUser() {
-console.log($("#form1").serializeObject());
 		$.ajax({
 			type : "POST",
-			url : $("#path").val() + "/user/adu",
+			url : $("#path").val() + "/user/addUser",
 			data : $("#form1").serializeObject(),
 			dataType : "json",
 			async : true,
 			success : function(data) {
 				if(data.success = true){
-					getUserList();
+					//getUserList();
+					alert("注册成功!");
 				}
 			},
 			error : function() {
-				alert();
+				alert("请求异常!");
+			}
+		});
+	}
+	
+	function isHaved() {
+		$.ajax({
+			type : "POST",
+			url : $("#path").val() + "/user/isHaved",
+			data : $("#form1").serializeObject(),
+			dataType : "json",
+			async : true,
+			success : function(data) {
+				if(data.success == true){
+					$("#usernameTs").html("账号已存在!");
+				} else {
+					$("#usernameTs").html("账号可用!");
+				}
+			},
+			error : function() {
+				alert("请求异常!");
 			}
 		});
 	}
@@ -81,20 +77,17 @@ console.log($("#form1").serializeObject());
 	}
 
 	$(function() {
-		getUserList()
+		//etUserList()
+		$("input[name='username']").on("blur",isHaved);
 	});
 </script>
 </head>
 <body>
-	
-	<input id="path" type="text" value="<%=path%>">
-
-	<img alt="1" src='<%=path%>/resources/img/1.png' />
+	<img alt="头像" src="<c:url value='/resources/img/1.png'/>" />
 	<form id="form1">
-		账号:<input type="text" name="userName" value="" /> <br /> 
-		密码:<input type="text" name="passWord" value="" /> <br /> 
-		年龄:<input type="text" name="birthday" value="" /> <br /> 
-		余额:<input type="text" name="money" value="" /> <br /> 
+		账号:<input type="text" name="username" value="" /><span id="usernameTs"></span> <br /> 
+		密码:<input type="text" name="password" value="" /> <br /> 
+		密码2:<input type="text" name="password2" value="" /> <br />
 		<input type="button" value="保存" onclick="addUser()" />
 	</form>
 
