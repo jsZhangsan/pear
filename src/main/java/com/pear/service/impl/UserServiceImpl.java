@@ -1,5 +1,8 @@
 package com.pear.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -39,6 +42,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Login getLoginByUsername(String username) {
 		return loginMapper.selectByUsername(username);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectUserAndLogin(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return loginMapper.selectUserAndLogin(map);
 	}
 
 }

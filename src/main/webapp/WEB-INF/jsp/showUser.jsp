@@ -10,72 +10,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>框架demo</title>
-<script type="text/javascript" src="<%=path%>/resources/js/jquery-1.12.0.js"></script>
+<title>异步demo</title>
+<jsp:include page="/WEB-INF/jsp/common/common.jsp"></jsp:include>
 <script type="text/javascript">
-	$.fn.serializeObject = function() {
-		var o = {};
-		var a = this.serializeArray();
-		$.each(a, function() {
-			if (o[this.name]) {
-				if (!o[this.name].push) {
-					o[this.name] = [ o[this.name] ];
-				}
-				o[this.name].push(this.value || '');
-			} else {
-				o[this.name] = this.value || '';
-			}
-		});
-		return o;
-	};
-
-	function addUser() {
-console.log($("#form1").serializeObject());
-		$.ajax({
-			type : "POST",
-			url : $("#path").val() + "/user/adu",
-			data : $("#form1").serializeObject(),
-			dataType : "json",
-			async : true,
-			success : function(data) {
-				if(data.success = true){
-					getUserList();
-				}
-			},
-			error : function() {
-				alert();
-			}
-		});
-	}
-
 	function getUserList() {
-		$.ajax({
-			type : "get",
-			url : $("#path").val() + "/user/getUserList",
-			data : {"map.nowPage":1},
-			dataType : "json",
-			async : true,
-			success : function(data) {
-//console.log(JSON.stringify(data));
-				if(data.success = true){
-					showUserList(data.rows);
-				}
-			},
-			error : function() {
-
-			}
-		});
-	}
-	
-	function showUserList(rows) {
-		var htmlStr = "";
-		for(var i = 0; i < rows.length; i++){
-			htmlStr = htmlStr 
-			+ "<tr><td>"+rows[i].id+"</td><td>"+rows[i].user_name+"</td><td>"
-			+rows[i].pass_word+"</td><td>"+rows[i].birthday+"</td></tr>";
-		}
-		
-		$("#tbody").html(htmlStr);
+		var url = $("#path").val() + "/user/getUserList";
+		var params = {};
+		loadContentSync(url, params, 'userList');
 	}
 
 	$(function() {
@@ -84,29 +25,7 @@ console.log($("#form1").serializeObject());
 </script>
 </head>
 <body>
-	<input id="path" type="text" value="<%=path%>">
-
-	<img alt="1" src='<%=path%>/resources/img/1.png' />
-	<form id="form1">
-		账号:<input type="text" name="userName" value="" /> <br /> 
-		密码:<input type="text" name="passWord" value="" /> <br /> 
-		年龄:<input type="text" name="birthday" value="" /> <br /> 
-		余额:<input type="text" name="money" value="" /> <br /> 
-		<input type="button" value="保存" onclick="addUser()" />
-	</form>
-
-	<table style="border: 5px solid red;">
-		<thead>
-			<tr>
-				<td>id</td>
-				<td>账号</td>
-				<td>密码</td>
-				<td>年龄</td>
-				<td>余额</td>
-			</tr>
-		</thead>
-		<tbody id="tbody">
-		</tbody>
-	</table>
+	用户表
+	<div id="userList"></div>
 </body>
 </html>

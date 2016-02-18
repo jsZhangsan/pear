@@ -86,4 +86,10 @@
     from login
     where username = #{username,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectUserAndLogin" resultType="java.util.Map" parameterType="java.util.Map" >
+  SELECT * 
+  	FROM `user` u
+  	LEFT JOIN login l ON l.user_id = u.id
+  </select>
 </mapper>

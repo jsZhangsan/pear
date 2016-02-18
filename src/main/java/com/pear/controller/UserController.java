@@ -1,9 +1,10 @@
 package com.pear.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,8 +19,13 @@ public class UserController extends BaseContorller {
 	@Resource
 	private UserService userService;
 	
-	@RequestMapping("/register")
+	@RequestMapping("/showUser")
 	public String showUser() {
+		return "showUser";
+	}
+	
+	@RequestMapping("/register")
+	public String register() {
 		return "register";
 	}
 	
@@ -57,5 +63,17 @@ public class UserController extends BaseContorller {
 		return JSONReturn.newInstance().json(false);
 	}
 	
-	
+	/**
+	 * @Title: getUserList
+	 * @Description: 查询用户账号和密码
+	 * @param:
+	 * @return:
+	 * @author 张鑫磊
+	 * @date 2016年2月18日 下午3:22:22
+	 */
+	@RequestMapping("/getUserList")
+	public String getUserList(Map<String, Object> map) {
+		map.put("list", userService.selectUserAndLogin(null));
+		return "userList";
+	}
 }
