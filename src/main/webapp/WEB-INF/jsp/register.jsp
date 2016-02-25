@@ -83,7 +83,7 @@
 </script>
 </head>
 <body>
-	<img alt="头像" src="<c:url value='/resources/img/1.png'/>" />
+	<img alt="头像" src='<c:url value="/resources/img/1.png"/>' />
 	<form id="form1">
 		账号:<input type="text" name="username" value="" /><span id="usernameTs"></span> <br /> 
 		密码:<input type="text" name="password" value="" /> <br /> 
